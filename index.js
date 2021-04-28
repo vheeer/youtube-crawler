@@ -51,7 +51,7 @@ import { sql } from "./mysql.js";
 
   const _main = async () => {
     const size = await getFolderSize.loose(myFolder);
-    let folder = "youtube-video";
+    let folder = "/tmp/youtube-video";
     console.log('size: ' + (size / 1024 / 1024))
     // 文件夹大于10G时停止运行
     if (size > 10 * 1024 * 1024 * 1024)
