@@ -42,7 +42,7 @@ import { sql } from "./mysql.js";
 
 ;(async () => {
   //创建目录
-  const myFolder = './youtube-video';
+  const myFolder = '/tmp/youtube-video';
   try{
     fs.mkdirSync(myFolder)
   }catch(e){
@@ -105,7 +105,7 @@ import { sql } from "./mysql.js";
       await sql.query("UPDATE video SET download = 1 WHERE video_id = ?;", [ current_video_id ])
     }catch(e){
       console.log("下载保存视频出现错误", e);
-      fs.unlinkSync(`./${second_folder}/${current_video_id}.mp4`);
+      fs.unlinkSync(`${second_folder}/${current_video_id}.mp4`);
     }
   }
 

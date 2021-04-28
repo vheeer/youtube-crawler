@@ -40,7 +40,7 @@ const getStream = async (url) => {
 const downloadVideo = async (stream, url, folder) => {
   // const strs = url.split('=')
   const id = url
-  const path = `./${folder}/${id}.mp4`
+  const path = `${folder}/${id}.mp4`
   const path_tmp = path + '.tmp'
   console.log('path_tmp' + path_tmp)
   const writer = fs.createWriteStream(path_tmp)
