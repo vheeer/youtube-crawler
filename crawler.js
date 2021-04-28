@@ -1,7 +1,8 @@
-const puppeteer = require('puppeteer')
-const cheerio = require('cheerio')
+import puppeteer from 'puppeteer'
+import cheerio from 'cheerio'
+import ytpl from 'ytpl'
 
-exports.crawler = async (url) => {
+export const crawler = async (url) => {
   const browser = await puppeteer.launch({
     args: ['--no-sandbox']
   })
@@ -12,6 +13,11 @@ exports.crawler = async (url) => {
 
   await browser.close()
   return results
+}
+
+export const getVideosByUser = async (url, options) => {
+  const playlist = await ytpl(url, options);
+  return playlist
 }
 
 function parse(html) {

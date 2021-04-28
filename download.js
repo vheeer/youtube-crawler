@@ -1,6 +1,6 @@
-const ytdl = require('ytdl-core')
-const cliProgress = require('cli-progress')
-const fs = require('fs')
+import ytdl from 'ytdl-core'
+import cliProgress from 'cli-progress'
+import fs from 'fs'
 
 const b1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic)
 
@@ -13,6 +13,7 @@ const getStream = async (url) => {
       filter: format => format.container === 'mp4' 
     })
     .on('progress', (_, totalDownloaded, total) => {
+      // console.log("chunk_length" + _, "totalDownloaded" + totalDownloaded, "total" + total)
       if(!allReceived) {
         b1.start(total, 0, {
           mbTotal: (total / 1024 / 1024).toFixed(2),
@@ -36,29 +37,33 @@ const getStream = async (url) => {
   })
 }
 
-const downloadVideo = async (stream, url) => {
-  const strs = url.split('=')
-  const id = strs[1]
-  const path = `files/${id}.mp4`
-  const writer = fs.createWriteStream(path)
+const downloadVideo = async (stream, url, folder) => {
+  // const strs = url.split('=')
+  const id = url
+  const path = `./${folder}/${id}.mp4`
+  const path_tmp = path + '.tmp'
+  console.log('path_tmp' + path_tmp)
+  const writer = fs.createWriteStream(path_tmp)
   stream.pipe(writer)
   return new Promise((resolve, reject) => {
     writer.on('finish', () => {
+      fs.renameSync(path_tmp, path);
       resolve ({
         success: true
       })
     })
-    writer.on('error', () => {
-      resolve({
-        success: false
-      })
+    writer.on('error', (a) => {
+      reject("出大事了" + a)
     })
   }) 
 }
 
-exports.getFile = async (url) => {
+export const getFile = async (url, folder) => {
+  // ytdl(url)
+  // .pipe(fs.createWriteStream('video.mp4'));
   const stream = await getStream(url)
-  const movie = await downloadVideo(stream, url)
+  // const stream = ytdl(url).on('progress',(a,b,c) => console.log(`${a}-${b}-${c}`))
+  const movie = await downloadVideo(stream, url, folder)
   if (!movie.success) {
     return ({
       success: false,
