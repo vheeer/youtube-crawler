@@ -50,6 +50,7 @@ import { sql } from "./mysql.js";
   }
 
   const _main = async () => {
+    return
     const size = await getFolderSize.loose(myFolder);
     let folder = "youtube-video";
     console.log('size: ' + (size / 1024 / 1024))
@@ -111,14 +112,14 @@ import { sql } from "./mysql.js";
 
   while (1) {
     // try{
+      console.log('9')
       await _main();
     // }catch(e){
     //   console.log('运行时出错', e);
     // }
-    await sleep(5);
+    await sleep(5000);
   }
-
- 
+  
 
   // for(let url of videos) {
   //   await getFile(url)
