@@ -42,7 +42,7 @@ import { sql } from "./mysql.js";
 
 ;(async () => {
   //创建目录
-  const myFolder = '/tmp/youtube-video';
+  const myFolder = './youtube-video';
   try{
     fs.mkdirSync(myFolder)
   }catch(e){
@@ -51,7 +51,7 @@ import { sql } from "./mysql.js";
 
   const _main = async () => {
     const size = await getFolderSize.loose(myFolder);
-    let folder = "/tmp/youtube-video";
+    let folder = "youtube-video";
     console.log('size: ' + (size / 1024 / 1024))
     // 文件夹大于10G时停止运行
     if (size > 10 * 1024 * 1024 * 1024)
@@ -105,7 +105,7 @@ import { sql } from "./mysql.js";
       await sql.query("UPDATE video SET download = 1 WHERE video_id = ?;", [ current_video_id ])
     }catch(e){
       console.log("下载保存视频出现错误", e);
-      fs.unlinkSync(`${second_folder}/${current_video_id}.mp4`);
+      fs.unlinkSync(`./${second_folder}/${current_video_id}.mp4`);
     }
   }
 
