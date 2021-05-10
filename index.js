@@ -64,7 +64,7 @@ import { sql } from "./mysql.js";
       SELECT 
         *
       FROM
-        (SELECT MIN(id) AS v_1_id,SUM(video.download) AS download_count FROM video where duration < 3600 GROUP BY author_channel_id) AS v_1 
+        (SELECT MIN(id) AS v_1_id,COUNT(*) AS count,SUM(video.download) AS download_count FROM video where duration < 3600 GROUP BY author_channel_id) AS v_1 
       LEFT JOIN
         (SELECT * FROM video WHERE id IN (SELECT MIN(id) FROM video GROUP BY author_channel_id) ORDER BY video.id) AS v
       ON
@@ -75,6 +75,7 @@ import { sql } from "./mysql.js";
         v.author_channel_id = user.channel_id
       WHERE
         user.abandon != 1
+        AND v_1.download_count < count
       ORDER BY
         v_1.download_count ASC;
     `;
